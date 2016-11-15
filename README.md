@@ -44,32 +44,44 @@ The app currently has no styling; it's up to you to add style and interactivity
 to it as you go through these tasks. Be creative!
 
  1. View lists, create new list
-    <br> Allow users to view and
-    create lists. Lists should be displayed as vertical columns in a
-    Trello-like manner.
-    <br>See: `GET /api/lists` and `POST /api/lists`. 
-    <br>See: `createList()` function in `static/script.js`
+    Allow users to view and create lists. Lists should be displayed as vertical columns in a Trello-like manner.
+    
+    See: `GET /api/lists` and `POST /api/lists`. 
+    See: `createList()` function in `static/script.js`
+    
  1. Create new card in a list
-    <br> Allow users to create new cards in existing lists.
-    <br>See: `POST /api/lists/:id`.
+    Allow users to create new cards in existing lists.
+    
+    See: `POST /api/lists/:id`.
  1. Rename list
-    <br>Allow users to rename existing lists.
-    <br>See: `POST /api/lists/:id`.
+    Allow users to rename existing lists.
+    
+    See: `POST /api/lists/:id`.
+    
  1. Change card contents
-    <br>Allow users to change the contents of cards.
-    <br>See: `POST /api/lists/:id`.
+    Allow users to change the contents of cards.
+    
+    See: `POST /api/lists/:id`.
+    
  1. Delete card
-    <br>Allow users to delete single cards.
-    <br>See: `POST /api/lists/:id`.
+    Allow users to delete single cards.
+    
+    See: `POST /api/lists/:id`.
+    
  1. Move cards
-    <br>Allow users to move cards within and between lists.
-    <br>See: `POST /api/lists/:id`.
+    Allow users to move cards within and between lists.
+    
+    See: `POST /api/lists/:id`.
+    
  1. Reorder lists
-    <br>Allow users to reorder whole lists. You should use drag-and-drop.
-    <br>See: `POST /api/lists/:id`.
+    Allow users to reorder whole lists. You should use drag-and-drop.
+    
+    See: `POST /api/lists/:id`.
+    
  1. Delete list
-    <br>Allow users to delete whole lists.
-    <br>See: `DELETE /api/lists/:id`.
+    Allow users to delete whole lists.
+    
+    See: `DELETE /api/lists/:id`.
 
 All tasks involves work in the browser with HTML, CSS and JavaScript (i.e. the frontend). Changes to the backend are not necessary.
 
@@ -79,11 +91,11 @@ We recommend that you **don't** publicly fork this repository. Make a private fo
 
  1. Make sure all your changes are committed to `git`.
 
-    ```bash
-    $ git status
-    On branch master
-    nothing to commit, working directory clean
-    ```
+```bash
+$ git status
+On branch master
+nothing to commit, working directory clean
+```
 
  1. If we reach the deadline we will pull from your repository.
 
