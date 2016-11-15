@@ -4,18 +4,18 @@ based on work from Horizons School of Technology - Mustafa Paksoy.
 
 ## Table of contents
 
-1. [Intro](#intro)
-1. [Your tasks](#your-tasks)
-1. [Submitting](#submitting)
-1. [Evaluation](#evaluation)
-1. [Running project](#running-project)
-1. [Schema](#schema)
-1. [Project Layout](#project-layout)
-1. [API Endpoints](#api-endpoints)
-  1. [Get all lists](#get-all-lists)
-  1. [Get one list](#get-one-list)
-  1. [Create new list](#create-new-list)
-  1. [Update existing list](#update-existing-list)
+1. [Intro](#markdown-header-intro)
+1. [Your tasks](#markdown-header-your-tasks)
+1. [Submitting](#markdown-header-submitting)
+1. [Evaluation](#markdown-header-evaluation)
+1. [Running project](#markdown-header-running-project)
+1. [Schema](#markdown-header-schema)
+1. [Project Layout](#markdown-header-project-layout)
+1. [API Endpoints](#markdown-header-api-endpoints)
+  1. [Get all lists](#markdown-header-get-all-lists)
+  1. [Get one list](#markdown-header-get-one-list)
+  1. [Create new list](#markdown-header-create-new-list)
+  1. [Update existing list](#markdown-header-update-existing-list)
 
 ## Intro
 
