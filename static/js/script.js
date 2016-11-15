@@ -47,7 +47,7 @@ loadLists()
       // If no lists are found, create sample list
       // and re-display.
       console.log('No lists found, creating one.');
-      createList('Hello', 0, ['Card 1', 'Card 2'])
+      createList('Hello', 0, ['Card 1', 'Card 2','myCard'])
         .then(function(list) {
           console.log('Created list', list);
           return loadLists();
