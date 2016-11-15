@@ -53,6 +53,7 @@ to it as you go through these tasks. Be creative!
     Allow users to create new cards in existing lists.
     
     See: `POST /api/lists/:id`.
+
  1. Rename list
     Allow users to rename existing lists.
     
