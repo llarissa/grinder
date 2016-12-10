@@ -136,7 +136,7 @@ BLAH BLAH BLAH
 > node app.js
 
 Initializing storage...
-Done initializing storage. Read 0 entities.
+Done initializing storage. Read 0 entities.c
 Express started on port 3000
 ```
 

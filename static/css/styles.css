@@ -1,2 +1,9 @@
 /* Your CSS code here */
 /* This file is included on every page. */
+
+#lists {
+    border: 6px solid lightgrey;
+    border-radius: 5px;
+    background-color: lightgrey;
+    width: 230px;
+}

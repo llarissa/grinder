@@ -1,5 +1,15 @@
 'use strict';
 // Your client side JavaScript code goes here.
+
+
+$('#addList').click(function () {
+  createList(nameInput, 2, ['testlist']);
+  var nameInput = text("listName");
+})
+
+
+
+
 // This file is included in every page.
 
 // Example code for creating a list on the server
@@ -24,16 +34,22 @@ function displayLists(lists) {
   // Lists should be ordered based on their 'pos' field
   lists.rows = _.sortBy(lists.rows, 'pos');
   lists.rows.forEach(function(list) {
-    var curElem = $('<li>').text(list.name);
+    var curElem = $('<div>');
+    var headline = $('<h3>').text(list.name);
+    curElem.append(headline);
     if (list.cards) {
-      var innerUl = $('<ul>');
+      var innerUl = $('<div>');
       list.cards.forEach(function(card) {
-        innerUl.append($('<li>').text(card));
+        innerUl.append($('<div>').text(card));
       });
       curElem.append(innerUl);
     }
     $('#lists').append(curElem);
   });
+}
+
+function deleteLists(lists) {
+  return $.ajax('/:id')
 }
 
 // start: execute functions above
@@ -50,7 +66,7 @@ loadLists()
       createList('Hello', 0, ['Card 1', 'Card 2','myCard'])
         .then(function(list) {
           console.log('Created list', list);
-          return loadLists();
+          return loadLists();-_                                                                                      
         })
         .then(function(lists) {
           displayLists(lists);
