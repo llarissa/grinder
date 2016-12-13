@@ -61,7 +61,8 @@ function getFields(entity, obj) {
 // REST Endpoint: /api/list
 // CRUD actions for list
 var listApiRouter = express.Router();
-app.use('/api/lists', listApiRouter);
+app.use('/api/lists', listApiRouter); // TODO: remove this
+app.use('/api/list', listApiRouter);
 
 // LIST_FIELDS: names of valid entity fields mapped to functions for validating
 // contents of fields.
