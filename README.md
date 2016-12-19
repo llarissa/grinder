@@ -201,9 +201,11 @@ For endpoints that take `POST` requests request parameters must be passed
 through the request body (i.e. not the URL). You can use regular jQuery AJAX
 request serialization (i.e. form-encoded) or JSON.
 
+NOTE: `:id` represents the paramter so replace it with a number like 3, e.g. `/api/lists/3` (there is no colon!)
+
 ### Get all lists
  * Method: `GET`
- * Path: `/api/list`
+ * Path: `/api/lists`
  * Response codes and contents
      * 200: Success. Response will contain an object with a single key `rows`, all `list` objects are returned under this.
 
@@ -215,7 +217,7 @@ request serialization (i.e. form-encoded) or JSON.
 
 ### Get one list
  * Method: `GET`
- * Path: `/api/list/:id`
+ * Path: `/api/lists/:id`
  * Response codes and contents
      * 200: Success. Response will contain list.
 
@@ -228,7 +230,7 @@ request serialization (i.e. form-encoded) or JSON.
 ### Create new list
 
  * Method: `POST`
- * Path: `/api/list`
+ * Path: `/api/lists`
  * Request parameters: All request parameters are expected to be passed in through the request body (i.e. not the URL).
      * name (required): name of the list
      * pos  (required): number representing the position of this list on the screen. `pos` counts up left-to-right.
@@ -240,7 +242,7 @@ request serialization (i.e. form-encoded) or JSON.
 ### Update existing list
 
  * Method: `POST`
- * Path: `/api/list/:id`
+ * Path: `/api/lists/:id`
      * id (required): id of the list to update
  * Request parameters: All request parameters are expected to be passed in through the request body (i.e. not the URL).
      * name (required): name of the list
@@ -254,7 +256,7 @@ request serialization (i.e. form-encoded) or JSON.
 ### Delete existing list
 
  * Method: `DELETE`
- * Path: `/api/list/:id`
+ * Path: `/api/lists/:id`
      * id (required): id of the list to remove
  * Responses:
      * 200: Success. Response will be boolean `true`.
