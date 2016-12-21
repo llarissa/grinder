@@ -3,7 +3,7 @@
 
 
 $('#addList').click(function () {
-  createList('List', 2, ['testlist', 'testlist2']).then(function (data) {
+  createList('List', 2, ['testlist', 'testlist1']).then(function (data) {
     console.log('createList', data);
     buildCard(data);
   });
@@ -42,16 +42,15 @@ function buildCard (list) {
   var column = $('<div>').attr('class', 'column').attr('data-listid', list.id);
   var curElem = $('<div>');
   var headline = $('<h3>').text(list.name);
+  var addCard = $('<button>').text('add card') .attr('class', 'addCard');
   curElem.append(headline);
   if (list.cards) {
     var innerUl = $('<div>').attr('class', 'cards');
     list.cards.forEach(function(card) {
-      innerUl.append($('<div>')
-        .text(card)
-        .attr('class', 'card')
-        );
+      innerUl.append( $('<div>').text(card).attr('class', 'card') );
     });
     curElem.append(innerUl);
+    curElem.append(addCard);
   }
   column.append(curElem);
   lists.append(column);
