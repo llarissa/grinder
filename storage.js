@@ -107,11 +107,22 @@ function upsert(kind, row) {
 
   var found = false;
 
+  // we have an id? -> lets search for the entry and replace it
   if (row.id || row.id === 0) {
     entity.rows = entity.rows.map(function(innerRow) {
       if (innerRow.id === row.id) {
         found = true;
         return row;
+      }
+      return innerRow;
+    });
+  }
+
+  // we found the entry? -> adjust the pos of the others
+  if (found) {
+    entity.rows = entity.rows.map(function(innerRow) {
+      if (innerRow.pos >= row.pos) {
+        innerRow.pos++;
       }
       return innerRow;
     });
