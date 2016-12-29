@@ -125,7 +125,7 @@ function upsert(kind, row) {
   // pos changed? -> adjust the pos of the others
   if (posChange) {
     entity.rows = entity.rows.map(function(innerRow) {
-      if (innerRow.pos >= row.pos) {
+      if (innerRow.pos >= row.pos && innerRow.id !== row.id) {
         innerRow.pos++;
       }
       return innerRow;
