@@ -3,6 +3,7 @@
 
 
 $('#addList').click(function () {
+<<<<<<< HEAD
   var nameInputList = $('#nameList').val();
   createList(nameInputList,2).then(function (data) {
   //createList('List', 2, ['testlist', 'testlist1']).then(function (data) {
@@ -68,6 +69,17 @@ $('h1').click(function() {
 
 function deleteList(id) {
   return $.ajax('/api/lists/' + id, {
+=======
+  createList('List', 2, ['testlist', 'testlist1']).then(function (data) {
+    console.log('createList', data);
+    buildCard(data);
+  });
+    
+}); //Ende click-Funktion
+
+function deleteList(id) {
+  return $.ajax('/api/lists' + id, {
+>>>>>>> d3b7e1287e7776457fa57d39485bd8e5b0110f40
     type: 'DELETE',
   });
 } //Ende deleteList
@@ -92,6 +104,7 @@ function loadLists() {
   return $.ajax('/api/lists');
 }
 
+<<<<<<< HEAD
 function loadSingleList(id) {
   return $.ajax('/api/lists/' + id);
 }
@@ -109,10 +122,15 @@ function updateLists(id,name, pos, cards) {
 
 
 function buildList (list) {
+=======
+
+function buildCard (list) {
+>>>>>>> d3b7e1287e7776457fa57d39485bd8e5b0110f40
   var lists = $('#lists');
   var column = $('<div>').attr('class', 'column').attr('data-listid', list.id);
   var curElem = $('<div>');
   var headline = $('<h3>').text(list.name);
+<<<<<<< HEAD
   curElem.append(headline);
   column.append(curElem);
   lists.append(column);
@@ -123,22 +141,41 @@ function buildList (list) {
   var addCard = $('<button>').text('add card...').attr('class', 'addCard').attr('data-listid', list.id);
   addCardButton();
     if (list.cards) {
+=======
+  var addCard = $('<button>').text('add card') .attr('class', 'addCard');
+  curElem.append(headline);
+  if (list.cards) {
+>>>>>>> d3b7e1287e7776457fa57d39485bd8e5b0110f40
     var innerUl = $('<div>').attr('class', 'cards');
     list.cards.forEach(function(card) {
       innerUl.append( $('<div>').text(card).attr('class', 'card') );
     });
     curElem.append(innerUl);
+<<<<<<< HEAD
   }
   curElem.append(inputCard);
   curElem.append(addCard);
 }
 
+=======
+    curElem.append(addCard);
+  }
+  column.append(curElem);
+  lists.append(column);
+}
+
+
+>>>>>>> d3b7e1287e7776457fa57d39485bd8e5b0110f40
 // Example code for displaying lists in the browser
 function displayLists(lists) {
   // Lists should be ordered based on their 'pos' field
   lists.rows = _.sortBy(lists.rows, 'pos');
   lists.rows.forEach(function(list) {
+<<<<<<< HEAD
      var listElem = buildList(list);
+=======
+     var listElem = buildCard(list);
+>>>>>>> d3b7e1287e7776457fa57d39485bd8e5b0110f40
   });
 }
 

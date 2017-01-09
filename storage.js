@@ -106,12 +106,30 @@ function upsert(kind, row) {
   }
 
   var found = false;
+  var posChange = false;
 
+<<<<<<< HEAD
+=======
+  // we have an id? -> lets search for the entry and replace it
+>>>>>>> d3b7e1287e7776457fa57d39485bd8e5b0110f40
   if (row.id || row.id === 0) {
     entity.rows = entity.rows.map(function(innerRow) {
       if (innerRow.id === row.id) {
         found = true;
+        if (innerRow.pos != row.pos) {
+           posChange = true;
+        }
         return row;
+      }
+      return innerRow;
+    });
+  }
+
+  // pos changed? -> adjust the pos of the others
+  if (posChange) {
+    entity.rows = entity.rows.map(function(innerRow) {
+      if (innerRow.pos >= row.pos && innerRow.id !== row.id) {
+        innerRow.pos++;
       }
       return innerRow;
     });
