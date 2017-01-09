@@ -1,9 +1,74 @@
 /* Your CSS code here */
 /* This file is included on every page. */
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    background-color: palegreen;
+}
 
+.container {
+    margin: 5px 10px 10px 20px;
+}
+
+h1 {
+    font-size: 2.3em;
+    font-weight: 900;
+}
+
+h3 {
+    color: yellow;
+
+ 
+}
 #lists {
-    border: 6px solid lightgrey;
-    border-radius: 5px;
+}
+
+.column {
     background-color: lightgrey;
-    width: 230px;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 5px;
+    margin-right: 20px;
+    width: 270px;
+    display: inline-block;
+    vertical-align: top;
+
+}
+
+.cards {
+    
+}
+
+.card {
+    background-color: white;
+    margin: 5px 0;
+    padding: 5px;
+    border: 1px solid white;
+    border-radius: 3px;
+}
+
+#addList {
+     font-family: 'Roboto';
+     display: inline-block;
+    font-size: 1.2em;
+    font-weight: 700;
+    margin-top: 15px;
+    padding: 2px 4px;
+    border-radius: 2px;
+    background-color: lightblue;
+}
+
+.addCard {
+ font-family: 'Roboto';
+     display: block;
+    font-weight: 400;
+}
+
+.inputCard {
+    border-radius: 5px;
+    margin-bottom: 5px;
+    margin-right: 20px;
+    width: 265px;
+
 }
