@@ -12,6 +12,8 @@ $('#addList').click(function() {
 });
 
 
+
+
 //neue Karte hinzufügen Button
 function addCardButton() {
     $('.addCard').click(function(e) {
@@ -37,27 +39,55 @@ function addCardButton() {
             .then(function(list) {
                 console.log(list.cards);
 
-
                 // TODO: make sure the added card is visible in the user interface
-
-
-
             })
     });
 }
 
 
-//rename Listname
-function changeListName() {
+//allow user to rename LIST
+  $('#lists').delegate("h3", "click", function(ev) {
+    var $colli = $(ev.target).closest('.column');
+    var id = parseInt($colli.attr('data-listid'));
     var input = $("<input>", {
         val: $(this).text(),
         type: "text"
     });
+    //input.attr('class', 'listRename');
     $(this).replaceWith(input);
     input.select();
-    //var saveButton = $('<button>').text('accept');
-    //$('h1').append(saveButton);
-};
+    var saveButton = $('<button>').text('accept').attr('type','submit');
+    var rejectButton = $('<button>').text('x').attr('type','submit');
+    var thisCard = $colli.find('.cards');
+    $(thisCard).prepend(rejectButton);
+    $(thisCard).prepend(saveButton);
+    
+    //loadSingleList(id);
+   return $.ajax('/api/lists');
+
+    });
+
+//allow user to rename CARD
+  $('#lists').delegate(".card", "click", function(ev) {
+    var $colu = $(ev.target).closest('.column');
+    var id = parseInt($colu.attr('data-listid'));
+    var input = $("<input>", {
+        val: $(this).text(),
+        type: "text"
+    });
+    //input.attr('class', 'listRename');
+    $(this).replaceWith(input);
+    input.select();
+    var thatCard = $colu.find('.card');
+    var saveButton = $('<button>').text('accept').attr('type','submit');
+    var rejectButton = $('<button>').text('x').attr('type','submit');
+    $(thatCard).append(rejectButton);
+    $(thatCard).prepend(saveButton);
+    
+    //loadSingleList(id);
+   return $.ajax('/api/lists');
+
+    });
 
 
 
@@ -75,22 +105,6 @@ function changeListName() {
   });
 }
 */
-
-$('h3').click(function() {
-    changeListName();
-
-
-    return $.ajax('/api/lists/' + id);
-});
-
-
-
-
-function deleteList(id) {
-    return $.ajax('/api/lists/' + id, {
-        type: 'DELETE',
-    });
-} //Ende deleteList
 
 
 // This file is included in every page.
@@ -163,9 +177,18 @@ function displayLists(lists) {
     });
 }
 
+
+function deleteList(id) {
+    return $.ajax('/api/lists/' + id, {
+        type: 'DELETE',
+    });
+} 
+/*
+// Funktion war glaub schon vorgegeben
 function deleteLists(lists) {
     return $.ajax('/:id')
 }
+*/
 
 // start: execute functions above
 loadLists()
