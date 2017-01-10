@@ -108,10 +108,7 @@ function upsert(kind, row) {
   var found = false;
   var posChange = false;
 
-<<<<<<< HEAD
-=======
   // we have an id? -> lets search for the entry and replace it
->>>>>>> d3b7e1287e7776457fa57d39485bd8e5b0110f40
   if (row.id || row.id === 0) {
     entity.rows = entity.rows.map(function(innerRow) {
       if (innerRow.id === row.id) {
