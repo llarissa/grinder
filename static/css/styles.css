@@ -39,7 +39,16 @@ h3 {
 .cards {
     
 }
-                    
+input {
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.saveButton, .cancelButton {
+    margin: 5px 20px;
+    border-radius: 3px;
+}
+
 .card {
     background-color: white;
     margin: 5px 0;

@@ -25,15 +25,16 @@ function addCardButton() {
 
                 var inputTextCard = $col.find('.inputCard').val();
                 var cardDiv = $col.find('.cards');
-                var appendCard = "<div>" + inputTextCard + "</div>";
-                 cardDiv.append(appendCard);
-                appendCard.addClass("card");
+                //var appendCard = "<div>" + inputTextCard + "</div>";
+                 // cardDiv.append(appendCard);
+               // appendCard.attr('class', 'card');
                
                 if (!_.isArray(data.cards)) {
                     data.cards = [inputTextCard];
                 } else {
                     data.cards.push(inputTextCard);
                 }
+                cardDiv.append($('<div>').text(inputTextCard).attr('class', 'card'));
                 return updateLists(id, data.name, data.pos, data.cards);
             })
             .then(function(list) {
@@ -51,20 +52,36 @@ function addCardButton() {
     var id = parseInt($colli.attr('data-listid'));
     var input = $("<input>", {
         val: $(this).text(),
-        type: "text"
+        type: "text",
+        class: "renameList"
     });
-    //input.attr('class', 'listRename');
+    input.attr('class', 'listRename');
     $(this).replaceWith(input);
     input.select();
-    var saveButton = $('<button>').text('accept').attr('type','submit');
-    var rejectButton = $('<button>').text('x').attr('type','submit');
+    var saveButton = $('<button>').text('accept').attr('type','submit').attr('class', 'saveButton');
+    var cancelButton = $('<button>').text('x').attr('type','submit').attr('class', 'cancelButton');
     var thisCard = $colli.find('.cards');
-    $(thisCard).prepend(rejectButton);
+    $(thisCard).prepend(cancelButton);
     $(thisCard).prepend(saveButton);
-    
-    //loadSingleList(id);
-   return $.ajax('/api/lists');
 
+    $('.saveButton').click(function(){
+      var newListName = input.val();
+      var saveAsh3 = input.replaceWith("<h3>" + newListName + "</h3>");
+      $('.saveButton').remove();
+      $('.cancelButton').remove();
+
+    })
+    
+    //if there's no change, return to origin
+    $('.cancelButton').click(function(){
+    //$('.listRename').replaceWith($('.headline'));
+    
+    $('.cancelButton').remove();
+    $('.saveButton').remove();
+    })
+    
+   //return $.ajax('/api/lists');
+    //updateLists(id, name, pos, cards);
     });
 
 //allow user to rename CARD
@@ -79,32 +96,22 @@ function addCardButton() {
     $(this).replaceWith(input);
     input.select();
     var thatCard = $colu.find('.card');
-    var saveButton = $('<button>').text('accept').attr('type','submit');
-    var rejectButton = $('<button>').text('x').attr('type','submit');
+    var saveButton = $('<button>').text('accept').attr('type','submit').attr('class', 'saveButton');
+    var rejectButton = $('<button>').text('x').attr('type','submit').attr('class', 'cancelButton');
     $(thatCard).append(rejectButton);
     $(thatCard).prepend(saveButton);
+
+    $('.saveButton').click(function(){
+      var newCardName = input.val();
+      var saveAsDiv = input.replaceWith("<div>" + newListName + "</div>");
+      $('.saveButton').remove();
+      $('.cancelButton').remove();
+    })
     
-    //loadSingleList(id);
-   return $.ajax('/api/lists');
-
+    
+   //return $.ajax('/api/lists');
+//updateLists(id, name, pos, cards);
     });
-
-
-
-/*function turnTextIntoInputField(inputId){
-  var inputIdWithHash = "#" + inputId;
-  var elementValue = $(inputIdWithHash).text();
-  $(inputIdWithHash).replaceWith('<input name="test" id"' + inputId + '"type=text" value="' + elementValue + '">');
-
-  $(document).on('click.' + inputId, function(event){
-    if (!$(event.target).closest(inputIdWithHash).length) {
-      $(document).off('click.' + inputId);
-      var value = $(inputIdWithHash).val();
-      $(inputIdWithHash).replaceWith('<p id="' + inputId + '"onclick="turnTextIntoInputField(\'' + inputId + '\')">' + value + '<p>');
-      }
-  });
-}
-*/
 
 
 // This file is included in every page.
@@ -147,6 +154,7 @@ function buildList(list) {
     var column = $('<div>').attr('class', 'column').attr('data-listid', list.id);
     var curElem = $('<div>');
     var headline = $('<h3>').text(list.name);
+    headline.attr('class', 'headline');
     curElem.append(headline);
     column.append(curElem);
     lists.append(column);
@@ -155,7 +163,7 @@ function buildList(list) {
     //Karte hinzufügen
 
     var inputCard = $('<textarea>').attr('class', 'inputCard');
-    var addCard = $('<button>').text('add card...').attr('class', 'addCard').attr('data-listid', list.id);
+    var addCard = $('<button>').text('add card...').attr('class', 'addCard');
     addCardButton();
     if (list.cards) {
         var innerUl = $('<div>').attr('class', 'cards');
