@@ -18,7 +18,7 @@ $('#addList').click(function() {
 function addCardButton() {
     //console.log('addCardButton');
    var addCard = $('<button>').text('add card...').attr('class', 'addCard');
-   $('.headline').append(addCard);
+   $('.context').append(addCard);
     $('.addCard').click(function(e) {
         console.log('addCardButton');
         var $col = $(e.target).closest('.column');
