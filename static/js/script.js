@@ -64,39 +64,21 @@ function addCardButton() {
     $(this).replaceWith(input);
     input.select();
     var saveButton = $('<button>').text('accept').attr('type','submit').attr('class', 'saveButton');
-    //var cancelButton = $('<button>').text('x').attr('type','submit').attr('class', 'cancelButton');
     var wrapListInput  = input.wrap("<div class='wrapListInput'></div>");
     //thisCard = $colli.closest('.wrapListInput');
     $('.wrapListInput').append(saveButton);
-    //$('.wrapListInput').append(cancelButton);
+    
     
 
     $('.saveButton').click(function(data){
       var newListName = input.val();
       var saveAsh3 = input.replaceWith("<h3>" + newListName + "</h3>");
       $('.saveButton').remove();
-      //$('.cancelButton').remove();
       return updateList(id, newListName, data.pos, data.cards)
     })
     
-    //if there's no change, return to origin
 
-/*$('.cancelButton').click(function(eve){
-    //$('.listRename').replaceWith($('.headline'));
-    
-    //$('.headline').show();
-    //$('.title').show();
-	//	var itemWrapper = $(eve.target).closest('.headline');
-	//	$('.wrapListInput').replaceWith(itemWrapper);
-       // itemWrapper.find('.headline').show();
-		//itemWrapper.find('.save').hide();
-		//itemWrapper.find('.listRename').remove();
-		//itemWrapper.find('.listRename').val('');
-
-    //$('.cancelButton').remove();
-    //$('.saveButton').remove();
-    })
-  */  
+  
 })
 
 //allow user to rename CARD
@@ -113,9 +95,8 @@ function addCardButton() {
     var inputDiv = input.wrap("<div class='wrapDiv'></div>");
     //var thatCard = $colu.find('.card');
     var saveButtonCard = $('<button>').text('accept').attr('type','submit').attr('class', 'saveButtonCard');
-    //var cancelButtonCard = $('<button>').text('x').attr('type','submit').attr('class', 'cancelButtonCard');
     $('.wrapDiv').append(saveButtonCard);
-    //$('.wrapDiv').append(cancelButtonCard);
+
     
 
     $('.saveButtonCard').click(function(data){
@@ -124,7 +105,6 @@ function addCardButton() {
       inputDiv.replaceWith(newCardName);
      
       $('.saveButtonCard').remove();
-     // $('.cancelButtonCard').remove();
       $('.card').unwrap();
      //var searchForIndex = $.inArray(cardName, data.cards);
       
