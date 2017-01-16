@@ -44,9 +44,19 @@ input {
     border-radius: 3px;
 }
 
-.saveButton, .cancelButton {
-    margin: 5px 20px;
+.saveButton {
+    margin: 5px 5px;
     border-radius: 3px;
+}
+
+
+.saveButtonCard {
+    margin: 5px 5px;
+    border-radius: 3px;
+}
+
+.upButton, .downButton {
+    margin-left: 240px;
 }
 
 .card {

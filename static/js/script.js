@@ -16,7 +16,11 @@ $('#addList').click(function() {
 
 //neue Karte hinzufügen Button
 function addCardButton() {
+    //console.log('addCardButton');
+   var addCard = $('<button>').text('add card...').attr('class', 'addCard');
+   $('.headline').append(addCard);
     $('.addCard').click(function(e) {
+        console.log('addCardButton');
         var $col = $(e.target).closest('.column');
         var id = parseInt($col.attr('data-listid'));
         console.log('id ' + id);
@@ -25,64 +29,75 @@ function addCardButton() {
 
                 var inputTextCard = $col.find('.inputCard').val();
                 var cardDiv = $col.find('.cards');
-                //var appendCard = "<div>" + inputTextCard + "</div>";
-                 // cardDiv.append(appendCard);
-               // appendCard.attr('class', 'card');
-               
+                               
                 if (!_.isArray(data.cards)) {
                     data.cards = [inputTextCard];
                 } else {
                     data.cards.push(inputTextCard);
                 }
-                cardDiv.append($('<div>').text(inputTextCard).attr('class', 'card'));
-                return updateLists(id, data.name, data.pos, data.cards);
+                //cardDiv.append($('<div>').text(inputTextCard).attr('class', 'card'));
+                return updateList(id, data.name, data.pos, data.cards);
+                displayLists(lists);
             })
-            .then(function(list) {
-                console.log(list.cards);
+            .then(function(lists) {
+                console.log(lists.cards);
+                //displayLists(lists);
+                
+                
 
                 // TODO: make sure the added card is visible in the user interface
             })
-    });
+    })
+    
 }
 
 
 //allow user to rename LIST
-  $('#lists').delegate("h3", "click", function(ev) {
+  $('#lists').delegate(".headline", "click", function(ev) {
     var $colli = $(ev.target).closest('.column');
     var id = parseInt($colli.attr('data-listid'));
     var input = $("<input>", {
         val: $(this).text(),
         type: "text",
-        class: "renameList"
     });
     input.attr('class', 'listRename');
     $(this).replaceWith(input);
     input.select();
     var saveButton = $('<button>').text('accept').attr('type','submit').attr('class', 'saveButton');
-    var cancelButton = $('<button>').text('x').attr('type','submit').attr('class', 'cancelButton');
-    var thisCard = $colli.find('.cards');
-    $(thisCard).prepend(cancelButton);
-    $(thisCard).prepend(saveButton);
+    //var cancelButton = $('<button>').text('x').attr('type','submit').attr('class', 'cancelButton');
+    var wrapListInput  = input.wrap("<div class='wrapListInput'></div>");
+    //thisCard = $colli.closest('.wrapListInput');
+    $('.wrapListInput').append(saveButton);
+    //$('.wrapListInput').append(cancelButton);
+    
 
-    $('.saveButton').click(function(){
+    $('.saveButton').click(function(data){
       var newListName = input.val();
       var saveAsh3 = input.replaceWith("<h3>" + newListName + "</h3>");
       $('.saveButton').remove();
-      $('.cancelButton').remove();
-
+      //$('.cancelButton').remove();
+      return updateList(id, newListName, data.pos, data.cards)
     })
     
     //if there's no change, return to origin
-    $('.cancelButton').click(function(){
+
+/*$('.cancelButton').click(function(eve){
     //$('.listRename').replaceWith($('.headline'));
     
-    $('.cancelButton').remove();
-    $('.saveButton').remove();
+    //$('.headline').show();
+    //$('.title').show();
+	//	var itemWrapper = $(eve.target).closest('.headline');
+	//	$('.wrapListInput').replaceWith(itemWrapper);
+       // itemWrapper.find('.headline').show();
+		//itemWrapper.find('.save').hide();
+		//itemWrapper.find('.listRename').remove();
+		//itemWrapper.find('.listRename').val('');
+
+    //$('.cancelButton').remove();
+    //$('.saveButton').remove();
     })
-    
-   //return $.ajax('/api/lists');
-    //updateLists(id, name, pos, cards);
-    });
+  */  
+})
 
 //allow user to rename CARD
   $('#lists').delegate(".card", "click", function(ev) {
@@ -92,31 +107,69 @@ function addCardButton() {
         val: $(this).text(),
         type: "text"
     });
-    //input.attr('class', 'listRename');
+      
     $(this).replaceWith(input);
     input.select();
-    var thatCard = $colu.find('.card');
-    var saveButton = $('<button>').text('accept').attr('type','submit').attr('class', 'saveButton');
-    var rejectButton = $('<button>').text('x').attr('type','submit').attr('class', 'cancelButton');
-    $(thatCard).append(rejectButton);
-    $(thatCard).prepend(saveButton);
-
-    $('.saveButton').click(function(){
-      var newCardName = input.val();
-      var saveAsDiv = input.replaceWith("<div>" + newListName + "</div>");
-      $('.saveButton').remove();
-      $('.cancelButton').remove();
-    })
+    var inputDiv = input.wrap("<div class='wrapDiv'></div>");
+    //var thatCard = $colu.find('.card');
+    var saveButtonCard = $('<button>').text('accept').attr('type','submit').attr('class', 'saveButtonCard');
+    //var cancelButtonCard = $('<button>').text('x').attr('type','submit').attr('class', 'cancelButtonCard');
+    $('.wrapDiv').append(saveButtonCard);
+    //$('.wrapDiv').append(cancelButtonCard);
     
-    
-   //return $.ajax('/api/lists');
-//updateLists(id, name, pos, cards);
-    });
 
+    $('.saveButtonCard').click(function(data){
+        var cardName = input.val();
+      var newCardName = $('<div>').text(input.val()).attr('class', 'card');
+      inputDiv.replaceWith(newCardName);
+     
+      $('.saveButtonCard').remove();
+     // $('.cancelButtonCard').remove();
+      $('.card').unwrap();
+     //var searchForIndex = $.inArray(cardName, data.cards);
+      
+      return updateList(id, data.name, data.pos, newCardName)
+      })
+          
+  })
+
+  $('.upButton').click(function(event){
+      var currentCard = $(event.target).closest('.card');
+      var prevCard = currentCard.prev();
+      if(prevCard.length == 0)  // if card is already the topmost card
+        return;
+    $(event.target).insertBefore(prevCard);
+    updateList(event.data.id, event.data.name, event.data.pos , data.cards)
+  })
+  
+ $('.downButton').click(function (event) { 
+     var currentCard = $(event.target).closest('.card');
+      var nextCard = currentCard.next();
+      if(nextCard.length == 0)  // if card is already the topmost card
+        return;
+    $(event.target).insertAfter(nextCard);
+    updateList(event.data.id, event.data.name, event.data.pos , data.cards)
+     
+ })
+
+
+// Dragula Drag & Drop
+/*var drake = dragula([$('#lists').get(0)], {direction: 'horizontal'});
+
+drake.on('drop', function(el, target, source, sibling) {
+  
+  var newIdx = $(el).index();
+  var id = parseInt(el.getAttribute('data-listid'));
+  
+  // TODO: send update to server
+  console.log('moved id', id, 'new index', newIdx);
+  
+});
+*/
 
 // This file is included in every page.
 
-// Example code for creating a list on the server
+// creating a list on the server
 function createList(name, pos, cards) {
     return $.ajax('/api/lists', {
         type: 'POST',
@@ -128,16 +181,18 @@ function createList(name, pos, cards) {
     });
 }
 
-// Example code for getting all `list`s from server
+// getting all `list`s from server
 function loadLists() {
     return $.ajax('/api/lists');
 }
 
+// getting ONE list from server
 function loadSingleList(id) {
     return $.ajax('/api/lists/' + id);
 }
 
-function updateLists(id, name, pos, cards) {
+// update an existing list
+function updateList(id, name, pos, cards) {
     return $.ajax('/api/lists/' + id, {
         type: 'POST',
         data: {
@@ -148,33 +203,13 @@ function updateLists(id, name, pos, cards) {
     });
 }
 
+// delete a specific list
+function deleteList(id) {
+    return $.ajax('/api/lists/' + id, {
+        type: 'DELETE',
+    });
+} 
 
-function buildList(list) {
-    var lists = $('#lists');
-    var column = $('<div>').attr('class', 'column').attr('data-listid', list.id);
-    var curElem = $('<div>');
-    var headline = $('<h3>').text(list.name);
-    headline.attr('class', 'headline');
-    curElem.append(headline);
-    column.append(curElem);
-    lists.append(column);
-
-
-    //Karte hinzufügen
-
-    var inputCard = $('<textarea>').attr('class', 'inputCard');
-    var addCard = $('<button>').text('add card...').attr('class', 'addCard');
-    addCardButton();
-    if (list.cards) {
-        var innerUl = $('<div>').attr('class', 'cards');
-        list.cards.forEach(function(card) {
-            innerUl.append($('<div>').text(card).attr('class', 'card'));
-        });
-        curElem.append(innerUl);
-    }
-    curElem.append(inputCard);
-    curElem.append(addCard);
-}
 
 // Example code for displaying lists in the browser
 function displayLists(lists) {
@@ -185,18 +220,40 @@ function displayLists(lists) {
     });
 }
 
+function buildList(list) {
+    var lists = $('#lists');
+    var column = $('<div>').attr('class', 'column').attr('data-listid', list.id);
+    var curElem = $('<div>').attr('class', 'context'); 
+    var headline =  $('<div>').attr('class', 'headline');
+    var title = ($('<h3>').text(list.name).attr('class', 'title'));
+    
+    headline.append(title);
+    curElem.append(headline);
+    column.append(curElem);
+    lists.append(column);
 
-function deleteList(id) {
-    return $.ajax('/api/lists/' + id, {
-        type: 'DELETE',
-    });
-} 
-/*
-// Funktion war glaub schon vorgegeben
-function deleteLists(lists) {
-    return $.ajax('/:id')
+
+    //Karte hinzufügen
+
+    var inputCard = $('<textarea>').attr('class', 'inputCard');
+    
+    //$('.addCard').click(addCardButton);
+    addCardButton();
+    if (list.cards) {
+        var innerUl = $('<div>').attr('class', 'cards');
+        var i=0;
+        list.cards.forEach(function(card) {
+            innerUl.append($('<div>').text(card).attr('class', 'card').attr('data-position', i));
+            innerUl.append($('<button>').text('^').attr('class', 'upButton'));
+            innerUl.append($('<button>').text('v').attr('class', 'downButton'));
+            i++;
+        });
+        curElem.append(innerUl);
+    }
+    curElem.append(inputCard);
+    
 }
-*/
+
 
 // start: execute functions above
 loadLists()
