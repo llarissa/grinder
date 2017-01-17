@@ -85,6 +85,8 @@ function addCardButton() {
   $('#lists').delegate(".card", "click", function(ev) {
     var $colu = $(ev.target).closest('.column');
     var id = parseInt($colu.attr('data-listid'));
+    var $card = $(ev.target).closest('.card');
+    var cardId = parseInt($colu.attr('data-cardId'));
     var input = $("<input>", {
         val: $(this).text(),
         type: "text"
@@ -102,6 +104,7 @@ function addCardButton() {
     $('.saveButtonCard').click(function(data){
         var cardName = input.val();
       var newCardName = $('<div>').text(input.val()).attr('class', 'card');
+      newCardName.attr('data-cardId', cardId);
       inputDiv.replaceWith(newCardName);
      
       $('.saveButtonCard').remove();
@@ -232,7 +235,7 @@ function buildList(list) {
         var innerUl = $('<div>').attr('class', 'cards');
         var i=0;
         list.cards.forEach(function(card) {
-            innerUl.append($('<div>').text(card).attr('class', 'card').attr('data-position', i));
+            innerUl.append($('<div>').text(card).attr('class', 'card').attr('data-cardId', i));
             innerUl.append($('<button>').text('^').attr('class', 'upButton'));
             innerUl.append($('<button>').text('v').attr('class', 'downButton'));
             
