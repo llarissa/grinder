@@ -134,9 +134,9 @@ function addCardButton() {
 
 
 // Dragula Drag & Drop
-/*var drake = dragula([$('#lists').get(0)], {direction: 'horizontal'});
+var drake = dragula([$('#lists').get(0)], {direction: 'horizontal'});
 
-drake.on('drop', function(el, target, source, sibling) {
+drake.on('dragend', function(el, target, source, sibling) {
   
   var newIdx = $(el).index();
   var id = parseInt(el.getAttribute('data-listid'));
@@ -145,7 +145,7 @@ drake.on('drop', function(el, target, source, sibling) {
   console.log('moved id', id, 'new index', newIdx);
   
 });
-*/
+
 
 // This file is included in every page.
 
