@@ -56,9 +56,7 @@ $('#lists').delegate(".addCard", "click", function(e) {
     input.select();
     var saveButton = $('<button>').text('accept').attr('type','submit').attr('class', 'saveButton');
     var wrapListInput  = input.wrap("<div class='wrapListInput'></div>");
-    //thisCard = $colli.closest('.wrapListInput');
-    $('.wrapListInput').append(saveButton);
-    
+    $colli.find('.wrapListInput').append(saveButton);
     
 
     $('.saveButton').click(function(data){
@@ -229,7 +227,7 @@ function buildList(list) {
 
     //Karte hinzufügen
 
-    var inputCard = $('<textarea>').attr('class', 'inputCard');
+    var inputCard = $('<textarea>').attr('class', 'inputCard').attr('placeholder', ' enter your card name');
     var deleteListButton = $('<button>').text('x').addClass('deleteListButton');   
     
     if (list.cards) {
