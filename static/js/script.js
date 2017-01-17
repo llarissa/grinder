@@ -183,10 +183,19 @@ function updateList(id, name, pos, cards) {
     });
 }
 
+
+// clickt to delete list
+$('#lists').delegate(".deleteListButton", "click", function(event){
+    var $column2 = $(event.target).closest('.column');
+    var id =parseInt($column2.attr('data-listid'));
+    deleteList(id);
+    $column2.remove();
+})
+
 // delete a specific list
 function deleteList(id) {
     return $.ajax('/api/lists/' + id, {
-        type: 'DELETE',
+        type: 'DELETE'
     });
 } 
 
@@ -208,14 +217,14 @@ function buildList(list) {
     var title = ($('<h3>').text(list.name).attr('class', 'title'));
     
     headline.append(title);
-    curElem.append(headline);
-    column.append(curElem);
-    lists.append(column);
+    
+    
 
 
     //Karte hinzufügen
 
     var inputCard = $('<textarea>').attr('class', 'inputCard');
+    var deleteListButton = $('<button>').text('x').addClass('deleteListButton');   
     
     //$('.addCard').click(addCardButton);
     addCardButton();
@@ -226,11 +235,16 @@ function buildList(list) {
             innerUl.append($('<div>').text(card).attr('class', 'card').attr('data-position', i));
             innerUl.append($('<button>').text('^').attr('class', 'upButton'));
             innerUl.append($('<button>').text('v').attr('class', 'downButton'));
+            
+    
             i++;
         });
         curElem.append(innerUl);
     }
+    lists.append(column);
+    column.append(deleteListButton, headline, curElem);
     curElem.append(inputCard);
+    
     
 }
 

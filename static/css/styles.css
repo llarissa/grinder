@@ -91,3 +91,7 @@ input {
     width: 265px;
 
 }
+
+.deleteListButton {
+    float: right;
+}
