@@ -56,7 +56,8 @@ input {
 }
 
 .upButton, .downButton {
-    margin-left: 240px;
+    float: right;
+    transform: scale(1, 0.7);
 }
 
 .card {

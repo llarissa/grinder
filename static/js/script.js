@@ -106,51 +106,74 @@ $('#lists').delegate(".addCard", "click", function(e) {
       loadSingleList(id).then(function(list){
         //console.log(list);
         var searchForIndex = $.inArray(originalCardName, list.cards);
-        //console.log("searchForIndex");
         //console.log(searchForIndex);
         list.cards.splice(searchForIndex, 1, input.val());
         updateList(id, list.name, list.pos, list.cards);
       });
-      })
-          
+    })        
   })
 
   $('#lists').delegate(".upButton", "click", function(event) {
-      console.log('.upButton');
-      
+           
       var $coll = $(event.target).closest('.column');
       var id = parseInt($coll.attr('data-listid'));
-      var currentCard = $coll.find('.card');
-      currentCard.attr('id', 'gefunden');
-      var prevCard = currentCard.prev();
-      //var tmp;
-      currentCard.insertBefore(prevCard);
-    /*tmp = currentCard;
-        currentCard = prevCard;
-        prevCard = tmp;
-*/
-      if(prevCard.length == 0)  // if card is already the topmost card
-        return;
+   
+      loadSingleList(id).then(function(data){
     
-       
-        
-        
-       
-    //updateList(id, list.name, list.pos , list.cards)
-    
+          var currentCard = $(event.target).parent('.card');
+          var textCurrentCard = (currentCard.find('.textWrap')).text();
+          //console.log(textCurrentCard);
+          var previousCard = currentCard.prev();
+          var textPreviousCard = (previousCard.find('.textWrap')).text();
+          //console.log(textPreviousCard);
+          currentCard.insertBefore(previousCard);
+          
+          if(previousCard.length == 0){        // if card is already the topmost card
+            return;
+          }
+          // 'overwrite' textCurrentCard with textPreviousCard
+          var searchForIndexOfCurrent = $.inArray(textCurrentCard, data.cards);
+          data.cards.splice(searchForIndexOfCurrent, 1, textPreviousCard);
+
+          // 'overwrite' textPreviousCard with textCurrentCard
+          var searchForIndexOfPrevious = $.inArray(textPreviousCard, data.cards);
+          data.cards.splice(searchForIndexOfPrevious, 1, textCurrentCard);
+
+        updateList(id, data.name, data.pos , data.cards)
+      })  
   })
 
-  
-/* $('.downButton').click(function (event) { 
-     var currentCard = $(event.target).closest('.card');
-      var nextCard = currentCard.next();
-      if(nextCard.length == 0)  // if card is already the bottommost card
-        return;
-    $(event.target).insertAfter(nextCard);
-    updateList(event.id, event.name, event.pos , data.cards)
-     
- })
-*/
+  $('#lists').delegate(".downButton", "click", function(event) {
+           
+      var $col = $(event.target).closest('.column');
+      var id = parseInt($col.attr('data-listid'));
+   
+      loadSingleList(id).then(function(data){
+    
+          var currentCard = $(event.target).parent('.card');
+          var textCurrentCard = (currentCard.find('.textWrap')).text();
+          //console.log(textCurrentCard);
+          var nextCard = currentCard.next();
+          var textNextCard = (nextCard.find('.textWrap')).text();
+          //console.log(textNextCard);
+          currentCard.insertAfter(nextCard);
+          
+          if(nextCard.length == 0){        // if card is already the bottommost card
+            return;
+          }
+          
+          // 'overwrite' textNextCard with textCurrentCard
+          var searchForIndexOfNext = $.inArray(textNextCard, data.cards);
+          data.cards.splice(searchForIndexOfNext, 1, textCurrentCard);
+
+          // 'overwrite' textCurrentCard with textNextCard
+          var searchForIndexOfCurrent = $.inArray(textCurrentCard, data.cards);
+          data.cards.splice(searchForIndexOfCurrent, 1, textNextCard);
+
+        updateList(id, data.name, data.pos , data.cards)
+      })  
+  })
+
 
 // Dragula Drag & Drop
 var drake = dragula([$('#lists').get(0)], {direction: 'horizontal'});
@@ -234,7 +257,7 @@ function displayLists(lists) {
         var content = $('<div>').attr('class', 'content'); 
         var headline =  $('<div>').attr('class', 'headline');
         var title = ($('<h3>').text(list.name).attr('class', 'title'));
-        var inputCard = $('<textarea>').attr('class', 'inputCard').attr('placeholder', ' enter your card name'); 
+         
             
     if (list.cards) {
         var allCards = $('<div>').attr('class', 'cards');
@@ -244,8 +267,8 @@ function displayLists(lists) {
             card.append($('<span class="textWrap">').text(cardText));
             var upButton = $('<button>').text('^').attr('class', 'upButton');
             card.append(upButton);
-            //var downButton = $('<button>').text('v').attr('class', 'downButton');
-            //card.append(downButton);
+            var downButton = $('<button>').text('v').attr('class', 'downButton');
+            card.append(downButton);
             allCards.append(card);
             
         });
@@ -253,19 +276,21 @@ function displayLists(lists) {
     }
     lists.append(column);
 
-//Add Button
-    var addCard = $('<button>').text('add card...').attr('class', 'addCard');
-    
+// textarea of 'add card' button
+    var inputCard = $('<textarea>').attr('class', 'inputCard').attr('placeholder', ' enter your card name');
+    content.append(inputCard);
 
-//DeleteList Button
+// Add Card Button
+    var addCard = $('<button>').text('add card...').attr('class', 'addCard');
+    content.append(addCard);
+
+// Delete List Button
     var deleteListButton = $('<button>').text('x').addClass('deleteListButton');
     column.append(deleteListButton);
     
     column.append(headline);
     column.append(content);
     headline.append(title);
-    content.append(inputCard); 
-    content.append(addCard);
     });
 }
 
