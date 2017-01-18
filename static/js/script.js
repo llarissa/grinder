@@ -255,16 +255,17 @@ function displayLists(lists) {
 
 //Add Button
     var addCard = $('<button>').text('add card...').attr('class', 'addCard');
-    column.find('.content').append(addCard);
+    
 
 //DeleteList Button
     var deleteListButton = $('<button>').text('x').addClass('deleteListButton');
-
     column.append(deleteListButton);
+    
     column.append(headline);
     column.append(content);
     headline.append(title);
     content.append(inputCard); 
+    content.append(addCard);
     });
 }
 
