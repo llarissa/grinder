@@ -7,16 +7,15 @@ $('#addList').click(function() {
     createList(nameInputList, 2, ['bla']).then(function(data) {
         //createList('List', 2, ['testlist', 'testlist1']).then(function (data) {
         console.log('createList', data);
-        buildList(data);
-    });
-});
+        displayLists(data);
+    })
+})
 
 
 
 
 //neue Karte hinzufügen Button
 $('#lists').delegate(".addCard", "click", function(e) {
-        console.log('addCardButton');
         var $col = $(e.target).closest('.column');
         var id = parseInt($col.attr('data-listid'));
         console.log('id ' + id);
@@ -31,7 +30,7 @@ $('#lists').delegate(".addCard", "click", function(e) {
                 }
                 
                 return updateList(id, data.name, data.pos, data.cards);
-                displayLists(lists);
+                
             })
             .then(function(lists) {
                 console.log(lists.cards);
@@ -59,11 +58,15 @@ $('#lists').delegate(".addCard", "click", function(e) {
     $colli.find('.wrapListInput').append(saveButton);
     
 
-    $('.saveButton').click(function(data){
+    $('.saveButton').click(function(event){
+        console.log(event);
       var newListName = input.val();
       var saveAsh3 = input.replaceWith("<h3>" + newListName + "</h3>");
       $('.saveButton').remove();
-      return updateList(id, newListName, data.pos, data.cards)
+      loadSingleList(id).then(function(data){
+        updateList(id, newListName, data.pos, data.cards)
+      })
+     
     })
     
 
@@ -71,12 +74,10 @@ $('#lists').delegate(".addCard", "click", function(e) {
 })
 
 //allow user to rename CARD
-  $('#lists').delegate(".card", "click", function(ev) {
+  $('#lists').delegate(".textWrap", "click", function(ev) {
     var originalCardName = $(ev.target).text();
     var $colu = $(ev.target).closest('.column');
     var id = parseInt($colu.attr('data-listid'));
-    var $card = $(ev.target).closest('.card');
-    var cardId = parseInt($colu.attr('data-cardId'));
     var input = $("<input>", {
         val: $(this).text(),
         type: "text"
@@ -91,20 +92,17 @@ $('#lists').delegate(".addCard", "click", function(e) {
 
     
 
-    $('.saveButtonCard').click(function(event){
+    $('.saveButtonCard').click(function(){
         //console.log("--------------------------------------------------------------");
         //console.log(event.target);
         //console.log(id);
         var cardName = input.val();
       var newCardName = $('<div>').text(input.val()).attr('class', 'card');
-      newCardName.attr('data-cardId', cardId);
       inputDiv.replaceWith(newCardName);
-
-     
      
       $('.saveButtonCard').remove();
       $('.card').unwrap();
-     //
+     
       loadSingleList(id).then(function(list){
         //console.log(list);
         var searchForIndex = $.inArray(originalCardName, list.cards);
@@ -117,25 +115,42 @@ $('#lists').delegate(".addCard", "click", function(e) {
           
   })
 
-  $('.upButton').click(function(event){
-      var currentCard = $(event.target).closest('.card');
+  $('#lists').delegate(".upButton", "click", function(event) {
+      console.log('.upButton');
+      
+      var $coll = $(event.target).closest('.column');
+      var id = parseInt($coll.attr('data-listid'));
+      var currentCard = $coll.find('.card');
+      currentCard.attr('id', 'gefunden');
       var prevCard = currentCard.prev();
+      //var tmp;
+      currentCard.insertBefore(prevCard);
+    /*tmp = currentCard;
+        currentCard = prevCard;
+        prevCard = tmp;
+*/
       if(prevCard.length == 0)  // if card is already the topmost card
         return;
-    $(event.target).insertBefore(prevCard);
-    updateList(event.data.id, event.data.name, event.data.pos , data.cards)
+    
+       
+        
+        
+       
+    //updateList(id, list.name, list.pos , list.cards)
+    
   })
+
   
- $('.downButton').click(function (event) { 
+/* $('.downButton').click(function (event) { 
      var currentCard = $(event.target).closest('.card');
       var nextCard = currentCard.next();
-      if(nextCard.length == 0)  // if card is already the topmost card
+      if(nextCard.length == 0)  // if card is already the bottommost card
         return;
     $(event.target).insertAfter(nextCard);
-    updateList(event.data.id, event.data.name, event.data.pos , data.cards)
+    updateList(event.id, event.name, event.pos , data.cards)
      
  })
-
+*/
 
 // Dragula Drag & Drop
 var drake = dragula([$('#lists').get(0)], {direction: 'horizontal'});
@@ -147,6 +162,10 @@ drake.on('dragend', function(el, target, source, sibling) {
   
   // TODO: send update to server
   console.log('moved id', id, 'new index', newIdx);
+
+  loadSingleList(id).then(function(data){
+      updateList(id, data.name, newIdx, data.cards)
+  })
   
 });
 
@@ -208,51 +227,46 @@ function deleteList(id) {
 function displayLists(lists) {
     // Lists should be ordered based on their 'pos' field
     lists.rows = _.sortBy(lists.rows, 'pos');
+
     lists.rows.forEach(function(list) {
-        var listElem = buildList(list);
-    });
-}
-
-function buildList(list) {
-    var lists = $('#lists');
-    var column = $('<div>').attr('class', 'column').attr('data-listid', list.id);
-    var curElem = $('<div>').attr('class', 'content'); 
-    var headline =  $('<div>').attr('class', 'headline');
-    var title = ($('<h3>').text(list.name).attr('class', 'title'));
-    
-    headline.append(title);
-    
-    
-
-
-    //Karte hinzufügen
-
-    var inputCard = $('<textarea>').attr('class', 'inputCard').attr('placeholder', ' enter your card name');
-    var deleteListButton = $('<button>').text('x').addClass('deleteListButton');   
-    
-    if (list.cards) {
-        var innerUl = $('<div>').attr('class', 'cards');
-        var i=0;
-        list.cards.forEach(function(card) {
-            innerUl.append($('<div>').text(card).attr('class', 'card').attr('data-cardId', i));
-            innerUl.append($('<button>').text('^').attr('class', 'upButton'));
-            innerUl.append($('<button>').text('v').attr('class', 'downButton'));
+        var lists = $('#lists');
+        var column = $('<div>').attr('class', 'column').attr('data-listid', list.id);
+        var content = $('<div>').attr('class', 'content'); 
+        var headline =  $('<div>').attr('class', 'headline');
+        var title = ($('<h3>').text(list.name).attr('class', 'title'));
+        var inputCard = $('<textarea>').attr('class', 'inputCard').attr('placeholder', ' enter your card name'); 
             
-    
-            i++;
+    if (list.cards) {
+        var allCards = $('<div>').attr('class', 'cards');
+        list.cards.forEach(function(cardText) {
+            var card = $('<div>');
+            card.attr('class', 'card');
+            card.append($('<span class="textWrap">').text(cardText));
+            var upButton = $('<button>').text('^').attr('class', 'upButton');
+            card.append(upButton);
+            //var downButton = $('<button>').text('v').attr('class', 'downButton');
+            //card.append(downButton);
+            allCards.append(card);
+            
         });
-        curElem.append(innerUl);
+        content.append(allCards);
     }
     lists.append(column);
-    column.append(deleteListButton, headline, curElem);
-    curElem.append(inputCard);
+
+//Add Button
     var addCard = $('<button>').text('add card...').attr('class', 'addCard');
     column.find('.content').append(addCard);
-   
-    
-    
-}
 
+//DeleteList Button
+    var deleteListButton = $('<button>').text('x').addClass('deleteListButton');
+
+    column.append(deleteListButton);
+    column.append(headline);
+    column.append(content);
+    headline.append(title);
+    content.append(inputCard); 
+    });
+}
 
 // start: execute functions above
 loadLists()
