@@ -113,6 +113,33 @@ $('#lists').delegate(".addCard", "click", function(e) {
     })        
   })
 
+
+
+// click to delete a card
+$('#lists').delegate(".deleteCardButton", "click", function(event) {
+    var $column = $(event.target).closest('.column');
+    var $cardToDelete = $(event.target).closest('.card');
+    var id = parseInt($column.attr('data-listid'));
+    var index = $cardToDelete.index();
+    console.log('deleteCard', id, index);
+    deleteCard(id, index);
+    $cardToDelete.remove();
+})
+
+
+// Delete card
+function deleteCard(id, indexCardToDelete) {
+    loadSingleList(id).then(function(list) {
+        //console.log(list);
+        //console.log("searchForIndex");
+        //console.log(searchForIndex);
+        list.cards.splice(indexCardToDelete, 1);
+        updateList(id, list.name, list.pos, list.cards);
+    });
+}
+
+
+// move card up
   $('#lists').delegate(".upButton", "click", function(event) {
            
       var $coll = $(event.target).closest('.column');
@@ -143,6 +170,7 @@ $('#lists').delegate(".addCard", "click", function(e) {
       })  
   })
 
+//move card down
   $('#lists').delegate(".downButton", "click", function(event) {
            
       var $col = $(event.target).closest('.column');
@@ -173,6 +201,36 @@ $('#lists').delegate(".addCard", "click", function(e) {
         updateList(id, data.name, data.pos , data.cards)
       })  
   })
+  
+  //move card to the right
+$('#lists').delegate(".rightButton", "click", function(event) {
+           
+      var $col = $(event.target).closest('.column');
+      var currentId = parseInt($col.attr('data-listid'));
+      var nextId = currentId + 1;
+      var cardToMove = $(event.target).closest('.card');
+      var textCardToMove = cardToMove.text();
+
+      // delete Card from current List
+      loadSingleList(currentId).then(function(data){
+        var searchForIndex= $.inArray(textCardToMove, data.cards);
+        data.cards.splice(searchForIndex,1);
+        cardToMove.remove();
+       updateList(currentId, data.name, data.pos , data.cards)
+     })  
+     // add specific card to list which is one further to the right
+     loadSingleList(nextId).then(function(data){
+         console.log(data);
+        $('.cards').append($('<div>').text(textCardToMove).attr('class', 'card'));
+       // var searchForIndex= $.inArray(textCardToMove, data.cards);
+    //data.cards.splice(searchForIndex,0, textCardToMove);
+        if($('.column').length == 0){        // if this is already the last list
+            return;
+          }
+          
+        updateList(nextId, data.name, data.pos , data.cards)
+  })
+})
 
 
 // Dragula Drag & Drop
@@ -265,10 +323,17 @@ function displayLists(lists) {
             var card = $('<div>');
             card.attr('class', 'card');
             card.append($('<span class="textWrap">').text(cardText));
-            var upButton = $('<button>').text('^').attr('class', 'upButton');
-            card.append(upButton);
+            var deleteCardButton = $('<button>').text('x').addClass('deleteCardButton');
+            card.append(deleteCardButton);
+            var rightButton = $('<button>').text('>').attr('class', 'rightButton');
+            card.append(rightButton);
             var downButton = $('<button>').text('v').attr('class', 'downButton');
             card.append(downButton);
+            var upButton = $('<button>').text('^').attr('class', 'upButton');
+            card.append(upButton);
+            //var leftButton = $('<button>').text('<').attr('class', 'leftButton');
+            //card.append(leftButton);
+                        
             allCards.append(card);
             
         });

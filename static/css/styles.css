@@ -60,6 +60,14 @@ input {
     transform: scale(1, 0.7);
 }
 
+.rightButton, .leftButton {
+    float: right;
+    transform: scale(0.5, 1);
+}
+.deleteCardButton{
+    float:right
+}
+
 .card {
     background-color: white;
     margin: 5px 0;
