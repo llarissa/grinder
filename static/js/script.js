@@ -4,7 +4,7 @@
 // add new list
 $('#addList').click(function () {
     var nameInputList = $('#nameList').val();
-    createList(nameInputList, 2, ['bla']).then(function (data) {
+    createList(nameInputList, 2, []).then(function (data) {
         //createList('List', 2, ['testlist', 'testlist1']).then(function (data) {
         console.log('createList', data);
         buildList(data);
