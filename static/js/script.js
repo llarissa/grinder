@@ -1,7 +1,7 @@
 'use strict';
 // Your client side JavaScript code goes here.
 
-
+// add new list
 $('#addList').click(function () {
     var nameInputList = $('#nameList').val();
     createList(nameInputList, 2, ['bla']).then(function (data) {
@@ -12,7 +12,7 @@ $('#addList').click(function () {
 })
 
 
-//neue Karte hinzufügen Button
+//add new card
 $('#lists').delegate(".addCard", "click", function (e) {
     var $col = $(e.target).closest('.column');
     var id = parseInt($col.attr('data-listid'));
@@ -48,6 +48,7 @@ $('#lists').delegate(".headline", "click", function (ev) {
     var input = $("<input>", {
         val: $(this).text(),
         type: "text",
+        maxlength: "22"
     });
     input.attr('class', 'listRename');
     $(this).replaceWith(input);
@@ -75,7 +76,8 @@ $('#lists').delegate(".textWrap", "click", function (ev) {
     var id = parseInt($colu.attr('data-listid'));
     var input = $("<input>", {
         val: $(this).text(),
-        type: "text"
+        type: "text",
+        maxlength: "22"
     });
 
     $(this).replaceWith(input);
@@ -194,7 +196,7 @@ $('#lists').delegate(".downButton", "click", function (event) {
     })
 })
   
-// clickt to delete list
+// click to delete list
 $('#lists').delegate(".deleteListButton", "click", function (event) {
     var $column2 = $(event.target).closest('.column');
     var id = parseInt($column2.attr('data-listid'));
@@ -210,7 +212,7 @@ drake.on('dragend', function (el, target, source, sibling) {
     var newIdx = $(el).index();
     var id = parseInt(el.getAttribute('data-listid'));
 
-    // TODO: send update to server
+
     console.log('moved id', id, 'new index', newIdx);
 
     loadSingleList(id).then(function (data) {
@@ -293,8 +295,8 @@ function buildList(list) {
     }
     lists.append(column);
 
-    // textarea of 'add card' button
-    var inputCard = $('<textarea>').attr('class', 'inputCard').attr('placeholder', ' enter your card name');
+    // input of 'add card' button
+    var inputCard = $('<input>').attr('class', 'inputCard').attr('placeholder', ' enter your card name').attr('maxlength', '24');
     content.append(inputCard);
 
     // Add Card Button
@@ -317,14 +319,10 @@ function buildCard(cardText) {
     card.append($('<span class="textWrap">').text(cardText));
     var deleteCardButton = $('<button>').text('x').addClass('deleteCardButton');
     card.append(deleteCardButton);
-    //var rightButton = $('<button>').text('>').attr('class', 'rightButton');
-    //card.append(rightButton);
-    var downButton = $('<button>').text('v').attr('class', 'downButton');
+    var downButton = $('<button>').text('▼').attr('class', 'downButton');
     card.append(downButton);
-    var upButton = $('<button>').text('^').attr('class', 'upButton');
+    var upButton = $('<button>').text('▲').attr('class', 'upButton');
     card.append(upButton);
-    //var leftButton = $('<button>').text('<').attr('class', 'leftButton');
-    //card.append(leftButton);
     $('.cards').append(card);
 
 }

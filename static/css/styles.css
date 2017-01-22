@@ -1,31 +1,53 @@
 /* Your CSS code here */
 /* This file is included on every page. */
+
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
     font-weight: 400;
-    background-color: palegreen;
+    background-color: #5485FF;   
 }
 
 .container {
     margin: 5px 10px 10px 20px;
 }
 
+
 h1 {
     font-size: 2.3em;
+    color: seashell;
+    text-align: center;
+    opacity: 0.75;
+    background-color: #2A5E7F;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    margin-left: -50px;
+    margin-top: -20px; 
+    width: 100%;
     font-weight: 900;
+    box-shadow: 0px 8px 6px -6px #000F24;
+    text-align: center; 
 }
+
+h2 {
+    padding: 50px,0px,0px,0px;
+    margin: 100px,0px,0px, 0px;
+    color: seashell;
+    text-align: left;
+}
+
+
+
 
 h3 {
-    color: yellow;
+    color: #000F24;
+}
 
- 
-}
-#lists {
-}
 
 .column {
-    background-color: lightgrey;
+    background-color: #CADCFF;
     border-radius: 5px;
     padding: 15px;
     margin-bottom: 5px;
@@ -33,39 +55,78 @@ h3 {
     width: 270px;
     display: inline-block;
     vertical-align: top;
-
 }
 
-.cards {
-    
-}
+
 input {
     padding: 5px;
     border-radius: 3px;
+    border:none;
 }
 
+
+
 .saveButton {
-    margin: 5px 5px;
-    border-radius: 3px;
+    font-family: 'Roboto';
+    display: inline;
+    font-weight: 600;
+    background: #60A0FF;
+    border:none;
+    margin:5px;
+    padding:5px;
+    color: seashell;
+    border-radius: 7px;
 }
 
 
 .saveButtonCard {
-    margin: 5px 5px;
+    font-family: 'Roboto';
+    display: inline;
+    font-weight: 600;
+    background: #60A0FF;
+    border:none;
+    margin:5px;
+    padding:5px;
+    color: seashell;
     border-radius: 3px;
 }
 
-.upButton, .downButton {
-    float: right;
-    transform: scale(1, 0.7);
+
+.upButton , .downButton{
+display: none;
+background-color: transparent;
 }
 
-.rightButton, .leftButton {
+.card:hover .upButton, .card:hover .downButton  {
+    display: block;
     float: right;
-    transform: scale(0.5, 1);
+    border: none;
 }
+
+
+.upButton:hover , .downButton:hover{
+-webkit-transition-duration: 0.3s; 
+background-color: #4A515C;
+color: seashell;
+border-radius: 3px;
+transform: (1,0.5);   
+border:none;
+}
+
+
+
+
 .deleteCardButton{
-    float:right
+    float:right;
+    border: none;
+    background-color: transparent;
+}
+
+.deleteCardButton:hover{
+    -webkit-transition-duration: 0.3s; 
+    background-color: #CC1D1A;
+    color: seashell;
+    border-radius: 3px;  
 }
 
 .card {
@@ -80,27 +141,54 @@ input {
      font-family: 'Roboto';
      display: inline-block;
     font-size: 1.2em;
-    font-weight: 700;
+    color: #4A515C;
+    text-align: center;
+    font-weight: 500;
     margin-top: 15px;
-    padding: 2px 4px;
-    border-radius: 2px;
-    background-color: lightblue;
+    padding-left: 10px;
+    padding-right:10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: none;
+    border-radius: 10px;
+    background-color: #CADCFF;
 }
 
 .addCard {
- font-family: 'Roboto';
-     display: block;
-    font-weight: 400;
+    font-family: 'Roboto';
+    display: block;
+    font-weight: 600;
+    background: #60A0FF;
+    border:none;
+    padding:10px;
+    color: seashell;
+    border-radius: 10px;
 }
 
 .inputCard {
     border-radius: 5px;
     margin-bottom: 5px;
     margin-right: 20px;
-    width: 265px;
-
+    width: 260px;
 }
 
-.deleteListButton {
-    float: right;
+
+
+.deleteListButton{
+    float:right;
+    border: none;
+    background-color: transparent;
+    padding: 8px 14px;
+    font-size: 16px;
+    font-weight: 700;
 }
+
+
+
+.deleteListButton:hover {
+    -webkit-transition-duration: 0.3s; 
+background-color: #CC1D1A;
+color: seashell;
+border-radius: 3px;  
+}
+
