@@ -2,8 +2,10 @@
 // Your client side JavaScript code goes here.
 
 // add new list
-$('#addList').click(function () {
+$('#addList').click(function (event) {
+    event.preventDefault();
     var nameInputList = $('#nameList').val();
+    $('#nameList').val('');
     createList(nameInputList, 2, []).then(function (data) {
         console.log('createList', data);
         buildList(data);
@@ -34,7 +36,18 @@ $('#lists').delegate(".addCard", "click", function (e) {
             console.log(list.cards);
             // TODO: make sure the added card is visible in the user interface
             var cardDiv = $col.find('.cards');
-            buildCard(inputTextCard, cardDiv);
+            if (cardDiv.length){
+                buildCard(inputTextCard, cardDiv);
+            }
+            else{
+                var searchContent = $col.find('.content');
+                console.log(searchContent);
+                var ourCards = $('<div>').addClass('cards');
+                searchContent.prepend(ourCards);
+                var cardDiv2 = searchContent.find('.cards');
+                buildCard(inputTextCard, ourCards);
+                     }
+            
          })
 })
 
@@ -55,7 +68,6 @@ $('#lists').delegate(".headline", "click", function (ev) {
     $colli.find('.wrapListInput').append(saveButton);
 
     $('.saveButton').click(function () {
-        //console.log(event);  
         loadSingleList(id).then(function (data) {
             var newListName = input.val();
             var saveAsh3 = input.replaceWith("<h3>" + newListName + "</h3>");
@@ -63,12 +75,6 @@ $('#lists').delegate(".headline", "click", function (ev) {
             $('.saveButton').remove();
             return updateList(id, newListName, data.pos, data.cards);
             })
-           /* .then(function(list){
-                var bla = input.replaceWith(newListName);
-                var headline = $(ev.target).closest('<h3>');
-                headline.text(bla);
-            })
-        */
     })
 })
 
@@ -84,7 +90,7 @@ $('#lists').delegate(".textWrap", "click", function (ev) {
         maxlength: "22"
     });
     var that = $(this);
-    $(this).replaceWith(input);
+    that.replaceWith(input);
     var inputDiv = input.wrap("<div class='wrapDiv'></div>");
     var saveButtonCard = $('<button>').text('save').attr('type', 'submit').attr('class', 'saveButtonCard');
     $('.upButton').hide();
@@ -109,9 +115,7 @@ $('#lists').delegate(".textWrap", "click", function (ev) {
         .then(function(data){
             var searchCards = $colu.find('.cards'); 
             that.text(cardName);
-            var newCardName = inputDiv.replaceWith(that);
-        console.log(that);
-            
+            inputDiv.replaceWith(that);
         }) 
     })
 })
@@ -151,10 +155,8 @@ $('#lists').delegate(".upButton", "click", function (event) {
 
         var currentCard = $(event.target).parent('.card');
         var textCurrentCard = (currentCard.find('.textWrap')).text();
-        //console.log(textCurrentCard);
         var previousCard = currentCard.prev();
         var textPreviousCard = (previousCard.find('.textWrap')).text();
-        //console.log(textPreviousCard);
         currentCard.insertBefore(previousCard);
 
         if (previousCard.length == 0) {        // if card is already the topmost card
@@ -182,10 +184,8 @@ $('#lists').delegate(".downButton", "click", function (event) {
 
         var currentCard = $(event.target).parent('.card');
         var textCurrentCard = (currentCard.find('.textWrap')).text();
-        //console.log(textCurrentCard);
         var nextCard = currentCard.next();
         var textNextCard = (nextCard.find('.textWrap')).text();
-        //console.log(textNextCard);
         currentCard.insertAfter(nextCard);
 
         if (nextCard.length == 0) {        // if card is already the bottommost card
