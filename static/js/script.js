@@ -30,14 +30,12 @@ $('#lists').delegate(".addCard", "click", function (e) {
 
     })
       
-        .then(function (lists) {
-            console.log(lists.cards);
+        .then(function (list) {
+            console.log(list.cards);
             // TODO: make sure the added card is visible in the user interface
             var cardDiv = $col.find('.cards');
             buildCard(inputTextCard, cardDiv);
-            
-             })
-
+         })
 })
 
 
@@ -52,28 +50,25 @@ $('#lists').delegate(".headline", "click", function (ev) {
     });
     input.attr('class', 'listRename');
     $(this).replaceWith(input);
-    input.select();
     var saveButton = $('<button>').text('save').attr('type', 'submit').attr('class', 'saveButton');
     var wrapListInput = input.wrap("<div class='wrapListInput'></div>");
     $colli.find('.wrapListInput').append(saveButton);
 
     $('.saveButton').click(function () {
-        //console.log(event);
-        
-                
+        //console.log(event);  
         loadSingleList(id).then(function (data) {
             var newListName = input.val();
-       // var saveAsh3 = input.replaceWith("<h3>" + newListName + "</h3>");
-            //buildList(data);
-            //data.name = newListName;
-            //input.replaceWith(newListName);
+            var saveAsh3 = input.replaceWith("<h3>" + newListName + "</h3>");
+            input.replaceWith(newListName);
             $('.saveButton').remove();
             return updateList(id, newListName, data.pos, data.cards);
             })
-            .then(function(list){
-                buildList(list);
+           /* .then(function(list){
+                var bla = input.replaceWith(newListName);
+                var headline = $(ev.target).closest('<h3>');
+                headline.text(bla);
             })
-        
+        */
     })
 })
 
@@ -88,9 +83,8 @@ $('#lists').delegate(".textWrap", "click", function (ev) {
         type: "text",
         maxlength: "22"
     });
-
+    var that = $(this);
     $(this).replaceWith(input);
-    input.select();
     var inputDiv = input.wrap("<div class='wrapDiv'></div>");
     var saveButtonCard = $('<button>').text('save').attr('type', 'submit').attr('class', 'saveButtonCard');
     $('.upButton').hide();
@@ -113,9 +107,11 @@ $('#lists').delegate(".textWrap", "click", function (ev) {
             return updateList(id, list.name, list.pos, list.cards);
         })
         .then(function(data){
-            var searchCards = $colu.find('.cards');
-            var newCardName = inputDiv.replaceWith(cardName);
-            buildCard(newCardName, searchCards);
+            var searchCards = $colu.find('.cards'); 
+            that.text(cardName);
+            var newCardName = inputDiv.replaceWith(that);
+        console.log(that);
+            
         }) 
     })
 })
