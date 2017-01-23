@@ -30,14 +30,15 @@ $('#lists').delegate(".addCard", "click", function (e) {
         return updateList(id, data.name, data.pos, data.cards);
 
     })
+      
         .then(function (lists) {
             console.log(lists.cards);
             // TODO: make sure the added card is visible in the user interface
             var cardDiv = $col.find('.cards');
-            cardDiv.append($('<div>').text(inputTextCard).attr('class', 'card'));
+            buildCard(inputTextCard, cardDiv);
+            
+             })
 
-            // !buildCard müsst hier eigentlich stehen;so "buildCard(inputTextCard)" fügts die neue Karte aber allen Karten hinzu
-        })
 })
 
 
@@ -53,18 +54,27 @@ $('#lists').delegate(".headline", "click", function (ev) {
     input.attr('class', 'listRename');
     $(this).replaceWith(input);
     input.select();
-    var saveButton = $('<button>').text('accept').attr('type', 'submit').attr('class', 'saveButton');
+    var saveButton = $('<button>').text('save').attr('type', 'submit').attr('class', 'saveButton');
     var wrapListInput = input.wrap("<div class='wrapListInput'></div>");
     $colli.find('.wrapListInput').append(saveButton);
 
-    $('.saveButton').click(function (event) {
-        console.log(event);
-        var newListName = input.val();
-        var saveAsh3 = input.replaceWith("<h3>" + newListName + "</h3>");
-        $('.saveButton').remove();
+    $('.saveButton').click(function () {
+        //console.log(event);
+        
+                
         loadSingleList(id).then(function (data) {
-            updateList(id, newListName, data.pos, data.cards)
-        })
+            var newListName = input.val();
+       // var saveAsh3 = input.replaceWith("<h3>" + newListName + "</h3>");
+            //buildList(data);
+            //data.name = newListName;
+            //input.replaceWith(newListName);
+            $('.saveButton').remove();
+            return updateList(id, newListName, data.pos, data.cards);
+            })
+            .then(function(list){
+                buildList(list);
+            })
+        
     })
 })
 
@@ -83,28 +93,31 @@ $('#lists').delegate(".textWrap", "click", function (ev) {
     $(this).replaceWith(input);
     input.select();
     var inputDiv = input.wrap("<div class='wrapDiv'></div>");
-    //var thatCard = $colu.find('.card');
-    var saveButtonCard = $('<button>').text('accept').attr('type', 'submit').attr('class', 'saveButtonCard');
-    $('.upButton').remove(); //oder so  event.data.p_cardDeleteBtn.css('display', 'none');
-    $('.downButton').remove();
-    $('.rightButton').remove();
-    $('.deleteCardButton').remove();
+    var saveButtonCard = $('<button>').text('save').attr('type', 'submit').attr('class', 'saveButtonCard');
+    $('.upButton').hide();
+    $('.downButton').hide();
+    $('.deleteCardButton').hide();
     $('.wrapDiv').append(saveButtonCard);
 
-    $('.saveButtonCard').click(function () {
-        var cardName = input.val();
-        // ! hier müsst auch die buildCard aufgerufen werden
-        var newCardName = $('<div>').text(input.val()).attr('class', 'card');
-        inputDiv.replaceWith(newCardName);
-
-        $('.saveButtonCard').remove();
-        $('.card').unwrap();
-
-        loadSingleList(id).then(function (list) {
+    
+    $('.saveButtonCard').click(function (evt) {
+       var cardName = input.val();  
+       $('.upButton').show();
+       $('.downButton').show();
+        $('.deleteCardButton').show();
+         loadSingleList(id).then(function (list) {
+                
+                 $('.saveButtonCard').remove();
+                 input.unwrap();
             var searchForIndex = $.inArray(originalCardName, list.cards);
             list.cards.splice(searchForIndex, 1, input.val());
-            updateList(id, list.name, list.pos, list.cards);
-        });
+            return updateList(id, list.name, list.pos, list.cards);
+        })
+        .then(function(data){
+            var searchCards = $colu.find('.cards');
+            var newCardName = inputDiv.replaceWith(cardName);
+            buildCard(newCardName, searchCards);
+        }) 
     })
 })
 
@@ -269,6 +282,7 @@ function deleteList(id) {
 
 // Example code for displaying lists in the browser
 function displayLists(lists) {
+    $('.column').remove();
     // Lists should be ordered based on their 'pos' field
     lists.rows = _.sortBy(lists.rows, 'pos');
 
@@ -288,7 +302,7 @@ function buildList(list) {
     if (list.cards) {
         var allCards = $('<div>').attr('class', 'cards');
         list.cards.forEach(function (cardText) {
-            buildCard(cardText);
+            buildCard(cardText, allCards);
 
         })
         content.append(allCards);
@@ -312,7 +326,7 @@ function buildList(list) {
     headline.append(title);
 }
 
-function buildCard(cardText) {
+function buildCard(cardText, allCards) {
     console.log('cardtext: ', cardText);
     var card = $('<div>');
     card.attr('class', 'card');
@@ -323,7 +337,7 @@ function buildCard(cardText) {
     card.append(downButton);
     var upButton = $('<button>').text('▲').attr('class', 'upButton');
     card.append(upButton);
-    $('.cards').append(card);
+    allCards.append(card);
 
 }
 
