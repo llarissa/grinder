@@ -2,11 +2,11 @@
 // Your client side JavaScript code goes here.
 
 // add new list
-$('#addList').click(function (event) {
+$('#addList').click(function(event) {
     event.preventDefault();
     var nameInputList = $('#nameList').val();
     $('#nameList').val('');
-    createList(nameInputList, 2, []).then(function (data) {
+    createList(nameInputList, 2, []).then(function(data) {
         console.log('createList', data);
         buildList(data);
     })
@@ -14,46 +14,43 @@ $('#addList').click(function (event) {
 
 
 //add new card
-$('#lists').delegate(".addCard", "click", function (e) {
+$('#lists').delegate(".addCard", "click", function(e) {
     var $col = $(e.target).closest('.column');
     var id = parseInt($col.attr('data-listid'));
     console.log('id ' + id);
     var inputTextCard = $col.find('.inputCard').val();
-    loadSingleList(id).then(function (data) {
-        console.log('data ', data);
+    loadSingleList(id).then(function(data) {
+            console.log('data ', data);
 
-        if (!_.isArray(data.cards)) {
-            data.cards = [inputTextCard];
-        } else {
-            data.cards.push(inputTextCard);
-        }
-        $('.inputCard').val('');
-        return updateList(id, data.name, data.pos, data.cards);
+            if (!_.isArray(data.cards)) {
+                data.cards = [inputTextCard];
+            } else {
+                data.cards.push(inputTextCard);
+            }
+            $('.inputCard').val('');
+            return updateList(id, data.name, data.pos, data.cards);
+        })
 
-    })
-      
-        .then(function (list) {
+        .then(function(list) {
             console.log(list.cards);
             // TODO: make sure the added card is visible in the user interface
             var cardDiv = $col.find('.cards');
-            if (cardDiv.length){
+            if (cardDiv.length) {
                 buildCard(inputTextCard, cardDiv);
-            }
-            else{
+            } else {
                 var searchContent = $col.find('.content');
                 console.log(searchContent);
                 var ourCards = $('<div>').addClass('cards');
                 searchContent.prepend(ourCards);
                 var cardDiv2 = searchContent.find('.cards');
                 buildCard(inputTextCard, ourCards);
-                     }
-            
-         })
+            }
+        })
 })
 
 
 //allow user to rename LIST
-$('#lists').delegate(".headline", "click", function (ev) {
+$('#lists').delegate(".headline", "click", function(ev) {
     var $colli = $(ev.target).closest('.column');
     var id = parseInt($colli.attr('data-listid'));
     var input = $("<input>", {
@@ -67,20 +64,20 @@ $('#lists').delegate(".headline", "click", function (ev) {
     var wrapListInput = input.wrap("<div class='wrapListInput'></div>");
     $colli.find('.wrapListInput').append(saveButton);
 
-    $('.saveButton').click(function () {
-        loadSingleList(id).then(function (data) {
+    $('.saveButton').click(function() {
+        loadSingleList(id).then(function(data) {
             var newListName = input.val();
             var saveAsh3 = input.replaceWith("<h3>" + newListName + "</h3>");
             input.replaceWith(newListName);
             $('.saveButton').remove();
             return updateList(id, newListName, data.pos, data.cards);
-            })
+        })
     })
 })
 
 
 //allow user to rename CARD
-$('#lists').delegate(".textWrap", "click", function (ev) {
+$('#lists').delegate(".textWrap", "click", function(ev) {
     var originalCardName = $(ev.target).text();
     var $colu = $(ev.target).closest('.column');
     var id = parseInt($colu.attr('data-listid'));
@@ -98,31 +95,31 @@ $('#lists').delegate(".textWrap", "click", function (ev) {
     $('.deleteCardButton').hide();
     $('.wrapDiv').append(saveButtonCard);
 
-    
-    $('.saveButtonCard').click(function (evt) {
-       var cardName = input.val();  
-       $('.upButton').show();
-       $('.downButton').show();
+
+    $('.saveButtonCard').click(function(evt) {
+        var cardName = input.val();
+        $('.upButton').show();
+        $('.downButton').show();
         $('.deleteCardButton').show();
-         loadSingleList(id).then(function (list) {
-                
-                 $('.saveButtonCard').remove();
-                 input.unwrap();
-            var searchForIndex = $.inArray(originalCardName, list.cards);
-            list.cards.splice(searchForIndex, 1, input.val());
-            return updateList(id, list.name, list.pos, list.cards);
-        })
-        .then(function(data){
-            var searchCards = $colu.find('.cards'); 
-            that.text(cardName);
-            inputDiv.replaceWith(that);
-        }) 
+        loadSingleList(id).then(function(list) {
+
+                $('.saveButtonCard').remove();
+                input.unwrap();
+                var searchForIndex = $.inArray(originalCardName, list.cards);
+                list.cards.splice(searchForIndex, 1, input.val());
+                return updateList(id, list.name, list.pos, list.cards);
+            })
+            .then(function(data) {
+                var searchCards = $colu.find('.cards');
+                that.text(cardName);
+                inputDiv.replaceWith(that);
+            })
     })
 })
 
 
 // click to delete a card
-$('#lists').delegate(".deleteCardButton", "click", function (event) {
+$('#lists').delegate(".deleteCardButton", "click", function(event) {
     var $column = $(event.target).closest('.column');
     var $cardToDelete = $(event.target).closest('.card');
     var id = parseInt($column.attr('data-listid'));
@@ -135,7 +132,7 @@ $('#lists').delegate(".deleteCardButton", "click", function (event) {
 
 // Delete card
 function deleteCard(id, indexCardToDelete) {
-    loadSingleList(id).then(function (list) {
+    loadSingleList(id).then(function(list) {
         //console.log(list);
         //console.log("searchForIndex");
         //console.log(searchForIndex);
@@ -146,12 +143,12 @@ function deleteCard(id, indexCardToDelete) {
 
 
 // move card up
-$('#lists').delegate(".upButton", "click", function (event) {
+$('#lists').delegate(".upButton", "click", function(event) {
 
     var $coll = $(event.target).closest('.column');
     var id = parseInt($coll.attr('data-listid'));
 
-    loadSingleList(id).then(function (data) {
+    loadSingleList(id).then(function(data) {
 
         var currentCard = $(event.target).parent('.card');
         var textCurrentCard = (currentCard.find('.textWrap')).text();
@@ -159,7 +156,7 @@ $('#lists').delegate(".upButton", "click", function (event) {
         var textPreviousCard = (previousCard.find('.textWrap')).text();
         currentCard.insertBefore(previousCard);
 
-        if (previousCard.length == 0) {        // if card is already the topmost card
+        if (previousCard.length == 0) { // if card is already the topmost card
             return;
         }
         // 'overwrite' textCurrentCard with textPreviousCard
@@ -174,13 +171,14 @@ $('#lists').delegate(".upButton", "click", function (event) {
     })
 })
 
+
 //move card down
-$('#lists').delegate(".downButton", "click", function (event) {
+$('#lists').delegate(".downButton", "click", function(event) {
 
     var $col = $(event.target).closest('.column');
     var id = parseInt($col.attr('data-listid'));
 
-    loadSingleList(id).then(function (data) {
+    loadSingleList(id).then(function(data) {
 
         var currentCard = $(event.target).parent('.card');
         var textCurrentCard = (currentCard.find('.textWrap')).text();
@@ -188,7 +186,7 @@ $('#lists').delegate(".downButton", "click", function (event) {
         var textNextCard = (nextCard.find('.textWrap')).text();
         currentCard.insertAfter(nextCard);
 
-        if (nextCard.length == 0) {        // if card is already the bottommost card
+        if (nextCard.length == 0) { // if card is already the bottommost card
             return;
         }
 
@@ -203,19 +201,23 @@ $('#lists').delegate(".downButton", "click", function (event) {
         updateList(id, data.name, data.pos, data.cards)
     })
 })
-  
+
+
 // click to delete list
-$('#lists').delegate(".deleteListButton", "click", function (event) {
+$('#lists').delegate(".deleteListButton", "click", function(event) {
     var $column2 = $(event.target).closest('.column');
     var id = parseInt($column2.attr('data-listid'));
     deleteList(id);
     $column2.remove();
 })
 
-// Dragula Drag & Drop
-var drake = dragula([$('#lists').get(0)], { direction: 'horizontal' });
 
-drake.on('dragend', function (el, target, source, sibling) {
+// Dragula Drag & Drop
+var drake = dragula([$('#lists').get(0)], {
+    direction: 'horizontal'
+});
+
+drake.on('dragend', function(el, target, source, sibling) {
 
     var newIdx = $(el).index();
     var id = parseInt(el.getAttribute('data-listid'));
@@ -223,10 +225,9 @@ drake.on('dragend', function (el, target, source, sibling) {
 
     console.log('moved id', id, 'new index', newIdx);
 
-    loadSingleList(id).then(function (data) {
+    loadSingleList(id).then(function(data) {
         updateList(id, data.name, newIdx, data.cards)
     })
-
 })
 
 
@@ -272,7 +273,7 @@ function deleteList(id) {
     return $.ajax('/api/lists/' + id, {
         type: 'DELETE'
     });
-} 
+}
 
 
 // Example code for displaying lists in the browser
@@ -281,7 +282,7 @@ function displayLists(lists) {
     // Lists should be ordered based on their 'pos' field
     lists.rows = _.sortBy(lists.rows, 'pos');
 
-    lists.rows.forEach(function (list) {
+    lists.rows.forEach(function(list) {
         buildList(list);
     })
 }
@@ -296,9 +297,8 @@ function buildList(list) {
 
     if (list.cards) {
         var allCards = $('<div>').attr('class', 'cards');
-        list.cards.forEach(function (cardText) {
+        list.cards.forEach(function(cardText) {
             buildCard(cardText, allCards);
-
         })
         content.append(allCards);
     }
